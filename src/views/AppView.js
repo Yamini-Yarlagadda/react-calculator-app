@@ -19,21 +19,13 @@ undoClick = () => {
     this.setState({ resultText : '',fullText: '0', isResultClicked: false, isResultInvalid: false});
 }
 
-/**
- * digitClicks
- * @param { integer } digit
- * @return { void } Click to digit and adds to full text
- */
 digitClick = (digit) => {
     
     if(this.state.isResultClicked){
         this.setState({ fullText : digit.toString(), resultText : '', isResultClicked: false});
     }else{
         let { fullText } = this.state;
-
-        // If fullText is 0, then clear it
         if(fullText === "0."){
-            // fullText = "";
         }else if(parseFloat(fullText) === 0){
             fullText = "";
         }
@@ -60,10 +52,6 @@ operationClick = (operationSign) =>{
     }
 }
 
-/**
- * dotClick
- * @return { void } Handle Dot click
- */
 dotClick = () => {
     if(this.state.isResultClicked){
         this.setState({ fullText : "0.", resultText : '', isResultClicked: false});
@@ -74,11 +62,6 @@ dotClick = () => {
     }
 }
 
-
-/**
- * functionalButtonClick
- * @return { void } Handle multiple events
- */
 functionalButtonClick = (key) => {
     let { fullText } = this.state;
 
@@ -89,7 +72,6 @@ functionalButtonClick = (key) => {
 
         case "CUT_FIRST":
             this.setState({ resultText : "" });
-            // Delete one by one character from fullText
             if(fullText.length > 0 ){
                 let newFullText='';
                 if(this.state.resultText == ""){
@@ -105,7 +87,6 @@ functionalButtonClick = (key) => {
 
 
         case "1/x":
-            // Get Values in FullText and 1/parse(FullText)
             try {
                 let fullTextNew = "(1/("+fullText+"))";
                 let finalResult = this.parseCalculate(fullTextNew);
@@ -128,7 +109,6 @@ functionalButtonClick = (key) => {
         case "+-":
             try {
                 let fullTextNew = "-("+fullText+")";
-                // let finalResult = this.parseCalculate(fullTextNew);
                 this.setState({ fullText: fullTextNew, resultText : "" });
             } catch (error) {
                 this.setState({ fullText: "", resultText : "" });
@@ -151,10 +131,6 @@ functionalButtonClick = (key) => {
     }
 }
 
-/**
- * equalClick
- * @return { void } Handle Equal click
- */
 equalClick = () => {
     try {
         let finalResult = this.parseCalculate(this.state.fullText);
@@ -168,21 +144,12 @@ equalClick = () => {
 }
 
 
-/**
- * parseCalculate
- * @param { string } the full text for calculation
- * @return { float } Final parsed result 
- */
 parseCalculate = (fullText) => {
     let finalResult = 0;
     finalResult = Parser.evaluate(fullText);
     return finalResult;
 }
 
-/**
- * checkKeyboardEvent
- * @return { function } Check and make action if any keyboard is pressed
- */
 checkKeyboardEvent = (event) => {
     if(event.key === "0" || event.key === "1" || event.key === "2" || event.key === "3" || event.key === "4" || event.key === "5" || event.key === "6" || event.key === "7" || event.key === "8" || event.key === "9") {
         this.digitClick(parseInt(event.key));
@@ -197,22 +164,15 @@ checkKeyboardEvent = (event) => {
     }
 }
 
-// Handle Key board event
 componentDidMount(){
     document.addEventListener("keydown", this.checkKeyboardEvent, false);
     localStorage.setItem('CALC_M', localStorage.getItem('CALC_M') || "0");
 }
 
-// Remove Handle Key board event
 componentWillUnmount(){
     document.removeEventListener("keydown", this.checkKeyboardEvent, false);
 }
 
-
-/**
- * printResultTextCSS
- * @return { string } css of result span
- */
 printResultTextCSS = () => {
     let css = "resultArea ";
     let { fullText, resultText } = this.state;
